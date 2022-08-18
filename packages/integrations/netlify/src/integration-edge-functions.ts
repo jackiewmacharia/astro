@@ -53,7 +53,9 @@ async function createEdgeManifest(routes: RouteData[], entryFile: string, dir: U
 		} else {
 			functions.push({
 				function: entryFile,
-				pattern: route.pattern.toString(),
+				// serialize pattern, expected format: ^/work/([^/]+?)/([^/]+?)/?$
+				// https://github.com/netlify/edge-bundler/blob/main/src/manifest.ts#L34
+				pattern: route.pattern.source.replace(/\\\//g, '/').toString(),
 			});
 		}
 	}
